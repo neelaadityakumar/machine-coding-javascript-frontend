@@ -8,26 +8,24 @@
 <body>
   <div class="chat-app">
     <div class="sidebar">
-      <input type="text" id="filterInput" placeholder="Filter by Chat Title / Order ID">
-      <div id="chatList" class="chat-list">
-        <!-- Chat list items will be populated here -->
+        <p>Filter by Title or Order Id</p>
+      <input type="text" id="filterInput" placeholder="Start typing to search">
+      <div class="chat-list" id="chatList">
       </div>
     </div>
     <div class="chat-window">
       <div id="chatHeader" class="chat-header">
-        <!-- Chat header information will be displayed here -->
       </div>
       <div id="chatMessages" class="chat-messages">
-        <!-- Chat messages will be displayed here -->
       </div>
-      <div class="chat-input">
+      <div class="message-input">
         <input type="text" id="messageInput" placeholder="Type your message...">
-        <button id="sendMessageBtn">Send</button>
+        <button id="sendButton" class=""><p> <i class="arrow right"></i></p>
+        </button>
       </div>
     </div>
   </div>
 
-
-  <script src="script.js"></script> <!-- If your script is in an external file -->
+  <script src="script.js"></script>
 </body>
 </html>

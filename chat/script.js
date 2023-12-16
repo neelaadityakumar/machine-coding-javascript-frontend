@@ -1,7 +1,7 @@
 let selectedChatId = null;
+let selectedId = null;
+let chatMessages = {};
 
-// Function to filter chat list by Chat Title / Order ID
-// Function to filter chat list by Chat Title / Order ID
 function filterChats(value) {
   const chatList = document.getElementById("chatList");
   const chatItems = chatList.getElementsByClassName("chat-item");
@@ -12,7 +12,6 @@ function filterChats(value) {
       .querySelector("p:nth-of-type(1)")
       .textContent.toLowerCase();
 
-    console.log("checking", orderId, orderId.includes(value.toLowerCase()));
     if (
       title.includes(value.toLowerCase()) ||
       orderId.includes(value.toLowerCase())
@@ -24,18 +23,18 @@ function filterChats(value) {
   }
 }
 
-// Function to highlight selected chat
 function highlightChat(chatId) {
-  const chatList = document.getElementById("chatList");
-  const chatItems = chatList.getElementsByClassName("chat-item");
+  const chatItems = document.querySelectorAll(".chat-item");
 
-  for (const chatItem of chatItems) {
+  chatItems.forEach((chatItem) => {
     chatItem.classList.remove("selected");
-  }
-
-  const selectedChat = document.getElementById(`chat-${chatId}`);
-  selectedChat.classList.add("selected");
+    if (chatItem.id == chatId.toString()) {
+      chatItem.classList.add("selected");
+      selectedId = chatId;
+    }
+  });
 }
+
 async function fetchData() {
   try {
     const response = await fetch(
@@ -48,7 +47,6 @@ async function fetchData() {
   }
 }
 
-// Populate chat list
 function populateChatList(chats) {
   const chatList = document.getElementById("chatList");
   chatList.innerHTML = "";
@@ -56,65 +54,141 @@ function populateChatList(chats) {
   chats.forEach((chat) => {
     const chatItem = document.createElement("div");
     chatItem.classList.add("chat-item");
+    chatItem.id = chat.id;
     chatItem.innerHTML = `
-        <img src="${chat.imageURL}" alt="Chat Image">
+        <img src="${chat.imageURL}" alt="Chat Image" id="product-image">
         <div>
-          <h3>${chat.title}</h3>
+        <div id="titleContainer"><h3>${
+          chat.title
+        }</h3>          <p>${formatDate(chat.latestMessageTimestamp)}</p>
+
+        </div>
           <p>Order ID: ${chat.orderId}</p>
-          <p>Last Message Date: ${formatDate(chat.latestMessageTimestamp)}</p>
+          <p>${getLastMessage(chat)}</p>
         </div>
       `;
-    chatItem.addEventListener("click", () => displayChatMessages(chat));
+    chatItem.addEventListener("click", () => {
+      displayChatMessages(chat.id);
+
+      highlightChat(chat.id);
+    });
     chatList.appendChild(chatItem);
   });
 }
+function getLastMessage(chat) {
+  const lastMessage =
+    chat.messageList && chat.messageList.length > 0
+      ? chat.messageList[chat.messageList.length - 1].message
+      : "";
 
-// Display messages for selected chat
-function displayChatMessages(chat) {
-  selectedChatId = chat.id; // Update selected chat ID
-  highlightChat(selectedChatId); // Highlight selected chat
-  const messages = document.getElementById("messages");
-  messages.innerHTML = "";
+  return lastMessage;
+}
 
-  if (chat.messageList.length === 0) {
-    const noMessages = document.createElement("div");
-    noMessages.classList.add("no-messages");
-    noMessages.textContent = "Send a message to start chatting";
-    messages.appendChild(noMessages);
-    return;
+function showChatWindow() {
+  const chatwindow = document.querySelector(".chat-window");
+  chatwindow.style.width = "60%";
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.style.width = "40%";
+}
+function displayChatMessages(chatId) {
+  if (!selectedId) {
+    showChatWindow();
   }
+  const messagesContainer = document.getElementById("chatMessages");
+  messagesContainer.innerHTML = "";
 
-  chat.messageList.forEach((message) => {
+  const messages = chatMessages[chatId] || [];
+
+  messages.forEach((message) => {
     const messageItem = document.createElement("div");
     messageItem.classList.add("message");
-    messageItem.classList.add(message.sender.toLowerCase()); // Adds sender class for alignment
-    messageItem.textContent = message.message;
-    messages.appendChild(messageItem);
+
+    if (message.messageType === "text") {
+      const isSentByUser = message.sender === "USER";
+
+      if (isSentByUser) {
+        messageItem.classList.add("sent-message");
+      } else {
+        messageItem.classList.add("received-message");
+      }
+
+      messageItem.textContent = message.message;
+    } else if (message.messageType === "optionedMessage") {
+      const card = document.createElement("div");
+      card.classList.add("optioned-message");
+
+      const messageContent = document.createElement("p");
+      messageContent.textContent = message.message;
+      card.appendChild(messageContent);
+
+      const optionsButton = document.createElement("button");
+      optionsButton.textContent = "Options";
+      optionsButton.addEventListener("click", () => {
+        const userReply = message.message;
+        sendMessage(chatId, userReply);
+      });
+
+      card.appendChild(optionsButton);
+      messageItem.appendChild(card);
+    }
+
+    messagesContainer.appendChild(messageItem);
   });
 }
-
-// Function to send a message (simulated functionality)
-function sendMessage() {
-  const messageInput = document.getElementById("messageInput");
-  const message = messageInput.value;
-  // Logic to send the message (will be implemented based on the backend)
-  // Clear input field after sending
-  messageInput.value = "";
-  // Code to append the user message to the chat
+function updateChatMessages(chatId, message) {
+  if (!chatMessages[chatId]) {
+    chatMessages[chatId] = [];
+  }
+  chatMessages[chatId].push(message);
+  displayChatMessages(chatId);
 }
 
-// Format date in DD/MM/YYYY format
+function sendMessage(chatId, message) {
+  console.log("selectedChat", chatId, message);
+
+  const newMessage = {
+    messageId: "msg" + (chatMessages[chatId].length + 1),
+    message,
+    timestamp: Date.now(),
+    sender: "USER",
+    messageType: "text",
+  };
+
+  updateChatMessages(chatId, newMessage);
+}
+
 function formatDate(timestamp) {
   const date = new Date(timestamp);
   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
-// Initialize chat page
 async function initializeChatPage() {
   const data = await fetchData();
   populateChatList(data);
+  data.forEach((chat) => {
+    chatMessages[chat.id] = chat.messageList || [];
+  });
 }
 
 initializeChatPage();
 const filterInput = document.getElementById("filterInput");
 filterInput.addEventListener("input", () => filterChats(filterInput.value));
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+
+sendButton.addEventListener("click", () => {
+  const selectedChat = document.getElementById(selectedId);
+
+  if (selectedChat) {
+    const chatId = selectedChat.id;
+    const message = messageInput.value.trim();
+
+    if (message !== "") {
+      sendMessage(chatId, message);
+    }
+
+    messageInput.value = "";
+  } else {
+    console.error("No chat selected");
+  }
+});
