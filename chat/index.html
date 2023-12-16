@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Page</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="chat-app">
+    <div class="sidebar">
+      <input type="text" id="filterInput" placeholder="Filter by Chat Title / Order ID">
+      <div id="chatList" class="chat-list">
+        <!-- Chat list items will be populated here -->
+      </div>
+    </div>
+    <div class="chat-window">
+      <div id="chatHeader" class="chat-header">
+        <!-- Chat header information will be displayed here -->
+      </div>
+      <div id="chatMessages" class="chat-messages">
+        <!-- Chat messages will be displayed here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Type your message...">
+        <button id="sendMessageBtn">Send</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="script.js"></script> <!-- If your script is in an external file -->
+</body>
+</html>
