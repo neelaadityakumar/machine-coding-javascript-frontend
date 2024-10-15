@@ -1,7 +1,8 @@
 const display = document.getElementById("display");
-const otpFields = [];
 const otpLength = 6;
+const otpFields = [];
 
+// Create input fields for OTP
 const populateDisplay = (length) => {
   for (let i = 0; i < length; i++) {
     const input = document.createElement("input");
@@ -14,72 +15,67 @@ const populateDisplay = (length) => {
   }
 };
 
-const isDigit = (value) => {
-  return /^\d+$/.test(value);
-};
+// Check if value is a digit
+const isDigit = (value) => /^\d+$/.test(value);
 
+// Handle keydown events for navigation and input
 display.addEventListener("keydown", (e) => {
   const target = e.target;
+
   if (isDigit(e.key)) {
-    target.value = "";
+    target.value = ""; // Clear input on digit key press
     return;
   }
 
+  // Navigate with arrow keys
   if (e.key === "ArrowLeft") {
     target.previousElementSibling?.focus();
     e.preventDefault();
-    e.stopPropagation();
-    return;
-  }
-
-  if (e.key === "ArrowRight") {
+  } else if (e.key === "ArrowRight") {
     target.nextElementSibling?.focus();
-    return;
   }
 });
 
+// Handle keyup events for Backspace and Delete
 display.addEventListener("keyup", (e) => {
   const target = e.target;
-  if (e.key === "Backspace" || e.key === "Delete") {
-    target.value = "";
-    target.previousElementSibling?.focus();
-    return;
+
+  if (["Backspace", "Delete"].includes(e.key)) {
+    target.value = ""; // Clear input
+    target.previousElementSibling?.focus(); // Move focus
   }
 });
 
+// Handle input events for digit validation
 display.addEventListener("input", (e) => {
   const target = e.target;
 
   if (!isDigit(target.value)) {
-    target.value = "";
+    target.value = ""; // Clear non-digit input
     return;
   }
 
-  if (target.value !== "") {
-    const next = target.nextElementSibling;
-    if (next) {
-      next.focus();
-    } else if (target.parentElement.firstChild.value === "") {
-      target.parentElement.firstChild.focus();
-    } else {
-      target.blur();
-    }
+  // Move to the next input field or blur if filled
+  const next = target.nextElementSibling;
+  if (next) {
+    next.focus();
+  } else if (target.parentElement.firstChild.value === "") {
+    target.parentElement.firstChild.focus();
+  } else {
+    target.blur();
   }
 });
 
+// Handle paste events for filling OTP fields
 display.addEventListener("paste", (e) => {
-  const clipboardData = e.clipboardData || window.clipboardData;
-  const pastedData = clipboardData.getData("Text");
+  const pastedData = (e.clipboardData || window.clipboardData).getData("Text");
 
-  if (
-    typeof pastedData === "string" &&
-    pastedData.length === otpLength &&
-    isDigit(pastedData)
-  ) {
+  if (pastedData.length === otpLength && isDigit(pastedData)) {
     otpFields.forEach((field, i) => {
-      field.value = pastedData.charAt(i);
+      field.value = pastedData.charAt(i); // Fill input fields with pasted data
     });
   }
 });
 
+// Initialize OTP display
 populateDisplay(otpLength);
