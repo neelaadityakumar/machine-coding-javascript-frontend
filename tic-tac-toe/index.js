@@ -4,23 +4,22 @@ class TicTacToe {
   constructor(root, gridSize = 3) {
     this.gridSize = gridSize;
     this.root = root;
-    this.grid = [];
+    this.grid = Array.from({ length: gridSize }, () =>
+      Array(gridSize).fill("")
+    );
     this.currentPlayer = "X";
     this.winner = null;
     this.cellFilled = 0;
-    this.populateGrid();
-    this.addEventListeners();
+    this.init();
   }
 
-  populateGrid() {
+  init() {
     this.root.appendChild(this.createGrid());
-    const elements = this.root.children;
-    for (let i = 0; i < this.gridSize; i++) {
-      this.grid[i] = Array.from(elements).slice(
-        i * this.gridSize,
-        i * this.gridSize + this.gridSize
-      );
-    }
+    this.root.addEventListener("click", (e) => {
+      if (e.target.classList.contains("cell") && !this.winner) {
+        this.play(e.target);
+      }
+    });
   }
 
   createGrid() {
@@ -37,99 +36,71 @@ class TicTacToe {
     return fragment;
   }
 
-  addEventListeners() {
-    this.root.addEventListener("click", (e) => {
-      if (e.target.classList.contains("cell") && this.winner === null) {
-        this.play(e.target);
-      }
-    });
-  }
-
   play(cell) {
-    if (cell.textContent === "") {
-      this.set(cell.dataset.x, cell.dataset.y, this.currentPlayer);
-      this.cellFilled += 1;
+    const x = cell.dataset.x;
+    const y = cell.dataset.y;
+    if (!this.grid[x][y]) {
+      this.grid[x][y] = this.currentPlayer;
+      cell.textContent = this.currentPlayer;
+      this.cellFilled++;
+
       if (this.checkWinner()) {
         this.winner = this.currentPlayer;
         this.winnerCallback?.(this.winner);
-        return;
-      } else if (this.cellFilled === this.gridSize * this.gridSize) {
+      } else if (this.cellFilled === this.gridSize ** 2) {
         this.winner = "Draw";
         this.winnerCallback?.(this.winner);
-        return;
+      } else {
+        this.currentPlayer = this.currentPlayer === "X" ? "O" : "X";
       }
-      this.changePlayer();
     }
-  }
-
-  changePlayer() {
-    this.currentPlayer = this.currentPlayer === "X" ? "O" : "X";
-  }
-
-  set(row, col, value) {
-    this.grid[row][col].textContent = value;
   }
 
   checkWinner() {
-    return (
-      this.isRowHasWinner(0) ||
-      this.isRowHasWinner(1) ||
-      this.isRowHasWinner(2) ||
-      this.isColHasWinner(0) ||
-      this.isColHasWinner(1) ||
-      this.isColHasWinner(2) ||
-      this.checkDiagonal() ||
-      this.checkDiagonalReverse()
+    return this.checkRows() || this.checkCols() || this.checkDiagonals();
+  }
+
+  checkRows() {
+    for (let row of this.grid) {
+      if (row.every((cell) => cell === row[0] && cell !== "")) return row[0];
+    }
+    return false;
+  }
+
+  checkCols() {
+    for (let col = 0; col < this.gridSize; col++) {
+      if (
+        this.grid.every(
+          (row) => row[col] === this.grid[0][col] && this.grid[0][col] !== ""
+        )
+      ) {
+        return this.grid[0][col];
+      }
+    }
+    return false;
+  }
+
+  checkDiagonals() {
+    const mainDiag = this.grid.map((_, i) => this.grid[i][i]);
+    const antiDiag = this.grid.map(
+      (_, i) => this.grid[i][this.gridSize - 1 - i]
     );
-  }
 
-  isRowHasWinner(row) {
-    const value = this.grid[row][0].textContent;
-    if (this.grid[row].every((v) => v.textContent === value)) {
-      return value;
-    }
+    if (mainDiag.every((cell) => cell === mainDiag[0] && cell !== ""))
+      return mainDiag[0];
+    if (antiDiag.every((cell) => cell === antiDiag[0] && cell !== ""))
+      return antiDiag[0];
     return false;
-  }
-
-  isColHasWinner(col) {
-    const value = this.grid[0][col].textContent;
-    if (
-      this.grid.map((row) => row[col]).every((v) => v.textContent === value)
-    ) {
-      return value;
-    }
-    return false;
-  }
-
-  checkDiagonal() {
-    const value = this.grid[0][0].textContent;
-    for (let i = 0; i < this.grid.length; i++) {
-      if (this.grid[i][i].textContent !== value) {
-        return false;
-      }
-    }
-    return value;
-  }
-
-  checkDiagonalReverse() {
-    const value = this.grid[0][2].textContent;
-    for (let i = 0; i < this.grid.length; i++) {
-      if (this.grid[i][this.grid.length - 1 - i].textContent !== value) {
-        return false;
-      }
-    }
-    return value;
   }
 
   reset() {
-    this.grid.forEach((row) => {
-      row.forEach((cell) => {
-        cell.textContent = "";
-      });
-    });
+    this.grid = Array.from({ length: this.gridSize }, () =>
+      Array(this.gridSize).fill("")
+    );
     this.currentPlayer = "X";
     this.winner = null;
     this.cellFilled = 0;
+    Array.from(this.root.children).forEach((cell) => (cell.textContent = ""));
   }
 }
 
