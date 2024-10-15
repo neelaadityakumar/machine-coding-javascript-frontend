@@ -22,21 +22,21 @@ const createComment = (name, text, settings) => {
   buttons.push(
     createElement("button", {
       textContent: "Reply",
-      className: "btn btn-primary small reply",
+      className: " small reply",
     })
   );
   if (!settings?.hasNoEdit)
     buttons.push(
       createElement("button", {
         textContent: "Edit",
-        className: "btn btn-primary small edit",
+        className: " small edit",
       })
     );
   if (!settings?.hasNoDelete)
     buttons.push(
       createElement("button", {
         textContent: "Delete",
-        className: "btn btn-primary small delete",
+        className: " small delete",
       })
     );
 
@@ -75,11 +75,11 @@ const createCommentInput = () => {
   });
   const postBtn = createElement("button", {
     textContent: "Post",
-    className: "btn btn-primary small post",
+    className: " small post",
   });
   const cancelBtn = createElement("button", {
     textContent: "Cancel",
-    className: "btn btn-primary small cancel",
+    className: " small cancel",
   });
   const btnHolder = createElement(
     "div",
@@ -123,7 +123,7 @@ commentContainer.addEventListener("click", (e) => {
 
     if (target.classList.contains("edit")) {
       target.textContent = "Save";
-      target.className = "btn btn-primary small save";
+      target.className = " small save";
       toggleNeighbours(target);
       target.closest(".main-comment").children[1].contentEditable = true;
       return;
@@ -134,7 +134,7 @@ commentContainer.addEventListener("click", (e) => {
 
       if (!commentText.textContent) return;
       target.textContent = "Edit";
-      target.className = "btn btn-primary small edit";
+      target.className = " small edit";
 
       commentText.contentEditable = false;
       toggleNeighbours(target);
