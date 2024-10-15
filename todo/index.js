@@ -42,11 +42,11 @@ listContainer.addEventListener("click", (e) => {
     edit.className = "save";
   } else if (e.target.classList.contains("save")) {
     const save = e.target;
-    const text = e.target.parentElement.querySelector("input");
+    const input = e.target.parentElement.querySelector("input");
     const span = document.createElement("span");
     span.className = "text";
-    span.textContent = text.value;
-    save.parentElement.replaceChild(span, text);
+    span.textContent = input.value;
+    save.parentElement.replaceChild(span, input);
     save.textContent = "✏️";
     save.className = "edit";
   }
