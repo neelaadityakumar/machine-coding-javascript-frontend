@@ -55,18 +55,21 @@ class TransferList {
   }
 
   setState() {
+    this.moveAllRightButton.disabled = !this.leftSectionEl.childElementCount;
     this.moveAllLeftButton.disabled = !this.rightSectionEl.childElementCount;
     this.moveLeftButton.disabled =
       !this.rightSectionEl.querySelector("input:checked");
     this.moveRightButton.disabled =
       !this.leftSectionEl.querySelector("input:checked");
-    this.moveAllRightButton.disabled = !this.leftSectionEl.childElementCount;
   }
 
-  addEventListeners() {
-    this.leftSectionEl.addEventListener("click", this.setState.bind(this));
-    this.rightSectionEl.addEventListener("click", this.setState.bind(this));
-
+  addEventListeners = () => {
+    this.leftSectionEl.addEventListener("click", () => {
+      this.setState();
+    });
+    this.rightSectionEl.addEventListener("click", () => {
+      this.setState();
+    });
     this.moveAllLeftButton.addEventListener("click", () => {
       this.moveAllLeft();
       this.setState();
@@ -86,7 +89,7 @@ class TransferList {
       this.moveAllRight();
       this.setState();
     });
-  }
+  };
 
   moveAllLeft() {
     const items = this.rightSectionEl.querySelectorAll("div");
