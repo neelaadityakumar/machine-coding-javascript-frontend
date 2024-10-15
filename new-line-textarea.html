@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Display Newlines from Textarea</title>
+    <style>
+      /* Optional: To maintain spaces in the output */
+      #output {
+        white-space: pre-wrap; /* Preserves whitespace including spaces and newlines */
+      }
+    </style>
   </head>
   <body>
     <h2>Enter Text with Newlines</h2>
@@ -20,34 +26,36 @@
     <div id="output"></div>
 
     <script>
-      // Function to display text with newline conversion
+      // Function to display text with newline and space conversion
       function showText() {
         const textarea = document.getElementById("myTextarea");
         const output = document.getElementById("output");
 
         // Replace newlines (\n) with <br> tags
-        const formattedText = textarea.value.replace(/\n/g, "<br>");
+        let formattedText = textarea.value.replace(/\n/g, "<br>");
 
         // Set the formatted text as HTML content
         output.innerHTML = formattedText;
       }
 
-      // Handle Tab key press to insert a single space in the textarea
+      // Handle Tab key press to insert four spaces in the textarea
       const textarea = document.getElementById("myTextarea");
       textarea.addEventListener("keydown", function (e) {
         if (e.key === "Tab") {
           e.preventDefault(); // Prevent default tab behavior
 
-          // Insert one space at the cursor's position
-          const start = this.selectionStart;
-          const end = this.selectionEnd;
+          // Insert four spaces at the cursor's position
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
 
-          // Set the value, adding a space
-          this.value =
-            this.value.substring(0, start) + " " + this.value.substring(end);
+          // Set the value, adding four spaces
+          textarea.value =
+            textarea.value.substring(0, start) +
+            "    " + // Inserting 4 spaces
+            textarea.value.substring(end);
 
-          // Move the cursor to the position right after the space
-          this.selectionStart = this.selectionEnd = start + 1;
+          // Move the cursor to the position right after the four spaces
+          textarea.selectionStart = textarea.selectionEnd = start + 4;
         }
       });
     </script>
