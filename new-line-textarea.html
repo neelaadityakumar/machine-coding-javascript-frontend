@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display Newlines from Textarea</title>
+  </head>
+  <body>
+    <h2>Enter Text with Newlines</h2>
+    <textarea
+      id="myTextarea"
+      rows="6"
+      cols="40"
+      placeholder="Enter text with newlines here..."
+    ></textarea>
+    <br />
+    <button onclick="showText()">Display Text</button>
+
+    <h3>Output:</h3>
+    <div id="output"></div>
+
+    <script>
+      // Function to display text with newline conversion
+      function showText() {
+        const textarea = document.getElementById("myTextarea");
+        const output = document.getElementById("output");
+
+        // Replace newlines (\n) with <br> tags
+        const formattedText = textarea.value.replace(/\n/g, "<br>");
+
+        // Set the formatted text as HTML content
+        output.innerHTML = formattedText;
+      }
+
+      // Handle Tab key press to insert a single space in the textarea
+      const textarea = document.getElementById("myTextarea");
+      textarea.addEventListener("keydown", function (e) {
+        if (e.key === "Tab") {
+          e.preventDefault(); // Prevent default tab behavior
+
+          // Insert one space at the cursor's position
+          const start = this.selectionStart;
+          const end = this.selectionEnd;
+
+          // Set the value, adding a space
+          this.value =
+            this.value.substring(0, start) + " " + this.value.substring(end);
+
+          // Move the cursor to the position right after the space
+          this.selectionStart = this.selectionEnd = start + 1;
+        }
+      });
+    </script>
+  </body>
+</html>
