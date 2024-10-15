@@ -1,7 +1,9 @@
 .transfer-list {
   width: 100%;
 }
-
+.flex {
+  display: flex;
+}
 section {
   display: flex;
   flex-basis: 0;
