@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Board from "./components/Board";
-import TaskForm from "./components/TaskForm";
-import "./styles.css";
+import React, { useEffect, useState } from "react";
+import "./style.css";
+import Board from "./Board";
+import TaskForm from "./TaskForm";
 
 const initialData = {
   tasks: [],
@@ -11,8 +11,7 @@ const initialData = {
     completed: [],
   },
 };
-
-const App = () => {
+const KanbanBoard = () => {
   const [data, setData] = useState(() => {
     const savedData = localStorage.getItem("kanbanData");
     return savedData ? JSON.parse(savedData) : initialData;
@@ -103,4 +102,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default KanbanBoard;

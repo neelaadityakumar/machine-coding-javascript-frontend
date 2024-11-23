@@ -1,6 +1,7 @@
+import React from "react";
 import VsCodePanel from "./VsCodePanel";
 
-function App() {
+const FileExplorer = () => {
   const dataSet = [
     {
       id: 1,
@@ -86,6 +87,6 @@ function App() {
   ];
 
   return <VsCodePanel dataSet={dataSet} />;
-}
+};
 
-export default App;
+export default FileExplorer;

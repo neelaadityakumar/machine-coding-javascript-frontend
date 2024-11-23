@@ -1,6 +1,6 @@
 // src/components/DragAndDropList.js
 import React, { useState } from "react";
-import "./DragAndDropList.css";
+import "./index.css";
 
 const DragAndDropList = () => {
   const [text, setText] = useState("");
