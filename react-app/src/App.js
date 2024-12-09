@@ -9,6 +9,7 @@ import FileExplorer from "./component/FileExplorer";
 import KanbanBoard from "./component/KanbanBoard";
 import DragAndDrop from "./component/DragAndDrop";
 import MultiLevelDropDown from "./component/MultiLevelDropdown";
+import CommentContainer from "./component/comment";
 
 const allPages = [
   {
@@ -47,6 +48,10 @@ const allPages = [
     title: "Multi Level dropdown",
     path: "/multi-Level-dropdown",
   },
+  {
+    title: "Nested Comment",
+    path: "/comment",
+  },
 ];
 function App() {
   return (
@@ -69,6 +74,7 @@ function App() {
             path="/multi-Level-dropdown"
             element={<MultiLevelDropDown />}
           />
+          <Route path="/comment" element={<CommentContainer />} />
         </Routes>
       </BrowserRouter>
     </div>
