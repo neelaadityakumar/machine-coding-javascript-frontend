@@ -11,6 +11,7 @@ import DragAndDrop from "./component/DragAndDrop";
 import MultiLevelDropDown from "./component/MultiLevelDropdown";
 import CommentContainer from "./component/comment";
 import ModalContainer from "./component/Modal/ModalContainer";
+import BoxContainer from "./component/Box/BoxContainer";
 
 const allPages = [
   {
@@ -57,6 +58,10 @@ const allPages = [
     title: "Modal",
     path: "/modal",
   },
+  {
+    title: "Box",
+    path: "/box",
+  },
 ];
 function App() {
   return (
@@ -68,6 +73,7 @@ function App() {
           <Route path="/kanban-board" element={<KanbanBoard />} />
           <Route path="/drag-and-drop" element={<DragAndDrop />} />
           <Route path="/modal" element={<ModalContainer />} />
+          <Route path="/box" element={<BoxContainer />} />
 
           <Route path="/toast" element={<Toast />} />
           <Route path="/traffic" element={<TrafficLightGenerator />} />
