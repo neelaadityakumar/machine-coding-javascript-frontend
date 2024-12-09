@@ -10,6 +10,7 @@ import KanbanBoard from "./component/KanbanBoard";
 import DragAndDrop from "./component/DragAndDrop";
 import MultiLevelDropDown from "./component/MultiLevelDropdown";
 import CommentContainer from "./component/comment";
+import ModalContainer from "./component/Modal/ModalContainer";
 
 const allPages = [
   {
@@ -52,6 +53,10 @@ const allPages = [
     title: "Nested Comment",
     path: "/comment",
   },
+  {
+    title: "Modal",
+    path: "/modal",
+  },
 ];
 function App() {
   return (
@@ -62,6 +67,7 @@ function App() {
           <Route path="/file-explorer" element={<FileExplorer />} />
           <Route path="/kanban-board" element={<KanbanBoard />} />
           <Route path="/drag-and-drop" element={<DragAndDrop />} />
+          <Route path="/modal" element={<ModalContainer />} />
 
           <Route path="/toast" element={<Toast />} />
           <Route path="/traffic" element={<TrafficLightGenerator />} />
