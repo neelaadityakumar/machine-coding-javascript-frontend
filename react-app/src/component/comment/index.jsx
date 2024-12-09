@@ -40,7 +40,7 @@ const Comment = ({ text, onReply }) => {
 
   return (
     <div className="all-comment p-2 border rounded mt-2">
-      <div className="card p-2 bg-gray-100 rounded">
+      <div className="card p-2  rounded">
         <span className="text block">{text}</span>
         <span
           className="reply text-blue-500 cursor-pointer mt-1 inline-block"

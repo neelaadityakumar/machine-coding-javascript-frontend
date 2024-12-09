@@ -29,7 +29,7 @@ const TrafficLightGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100 p-4">
+    <div className="min-h-screen flex flex-col items-center  p-4">
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-4">Traffic Light Generator</h1>
         <div className="flex gap-4 mb-4">

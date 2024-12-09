@@ -72,22 +72,23 @@ const PageRoutes = [
 ];
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home PageRoutes={PageRoutes} />} />
+    <main className="min-w-full flex justify-center p-20">
+      <div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home PageRoutes={PageRoutes} />} />
 
-          <Route path="/toast" element={<Toast />} />
-          {PageRoutes.map((page) => (
-            <Route
-              key={page.title}
-              path={page.path}
-              element={<page.component />}
-            />
-          ))}
-        </Routes>
-      </BrowserRouter>
-    </div>
+            {PageRoutes.map((page) => (
+              <Route
+                key={page.title}
+                path={page.path}
+                element={<page.component />}
+              />
+            ))}
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </main>
   );
 }
 
