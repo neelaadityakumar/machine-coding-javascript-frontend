@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Home = ({ allPages }) => {
+const Home = ({ PageRoutes }) => {
   const navigate = useNavigate();
   return (
     <div className="bg-black min-h-screen grid col-span-2 place-content-center">
-      {allPages.map((page) => (
+      {PageRoutes.map((page) => (
         <div key={page.title}>
           <button
             onClick={() =>

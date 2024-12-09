@@ -13,54 +13,61 @@ import CommentContainer from "./component/comment";
 import ModalContainer from "./component/Modal/ModalContainer";
 import BoxContainer from "./component/Box/BoxContainer";
 
-const allPages = [
-  {
-    title: "Home",
-    path: "/",
-  },
+const PageRoutes = [
   {
     title: "File Explorer",
     path: "/file-explorer",
+    component: FileExplorer,
   },
   {
     title: "Kanban Board",
     path: "/kanban-board",
+    component: KanbanBoard,
   },
   {
     title: "Drag And Drop",
     path: "/drag-and-drop",
+    component: DragAndDrop,
   },
   {
     title: "Toast",
     path: "/toast",
+    component: Toast,
   },
   {
     title: "Traffic Light Generator",
     path: "/traffic",
+    component: TrafficLightGenerator,
   },
   {
     title: "Virtualization",
     path: "/virtual",
+    component: Virtualization,
   },
   {
     title: "Calendar",
     path: "/calendar",
+    component: Calendar,
   },
   {
     title: "Multi Level dropdown",
     path: "/multi-Level-dropdown",
+    component: MultiLevelDropDown,
   },
   {
     title: "Nested Comment",
     path: "/comment",
+    component: CommentContainer,
   },
   {
     title: "Modal",
     path: "/modal",
+    component: ModalContainer,
   },
   {
     title: "Box",
     path: "/box",
+    component: BoxContainer,
   },
 ];
 function App() {
@@ -68,25 +75,16 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home allPages={allPages} />} />
-          <Route path="/file-explorer" element={<FileExplorer />} />
-          <Route path="/kanban-board" element={<KanbanBoard />} />
-          <Route path="/drag-and-drop" element={<DragAndDrop />} />
-          <Route path="/modal" element={<ModalContainer />} />
-          <Route path="/box" element={<BoxContainer />} />
+          <Route path="/" element={<Home PageRoutes={PageRoutes} />} />
 
           <Route path="/toast" element={<Toast />} />
-          <Route path="/traffic" element={<TrafficLightGenerator />} />
-          <Route path="/virtual" element={<Virtualization />} />
-          <Route
-            path="/calendar"
-            element={<Calendar month={10} year={2024} />}
-          />
-          <Route
-            path="/multi-Level-dropdown"
-            element={<MultiLevelDropDown />}
-          />
-          <Route path="/comment" element={<CommentContainer />} />
+          {PageRoutes.map((page) => (
+            <Route
+              key={page.title}
+              path={page.path}
+              element={<page.component />}
+            />
+          ))}
         </Routes>
       </BrowserRouter>
     </div>
