@@ -1,18 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const Home = ({ allPages }) => {
   const navigate = useNavigate();
   return (
-    <div>
-      route
-      <button
-        onClick={() =>
-          navigate("/list", { state: { id: 123, category: "example" } })
-        }
-      >
-        change
-      </button>
+    <div className="bg-black min-h-screen grid col-span-2 place-content-center">
+      {allPages.map((page) => (
+        <div key={page.title}>
+          <button
+            onClick={() =>
+              navigate(page.path, { state: { id: 123, category: "example" } })
+            }
+          >
+            {page.title}
+          </button>
+        </div>
+      ))}
     </div>
   );
 };

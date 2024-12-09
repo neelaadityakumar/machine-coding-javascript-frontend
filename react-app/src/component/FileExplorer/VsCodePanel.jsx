@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
 const VsCodePanel = ({ dataSet }) => {
-  const [data, setData] = useState(dataSet);
   return (
     <div>
-      {data.map((node) => (
+      {dataSet.map((node) => (
         <TreeNode key={node.id} node={node} />
       ))}
     </div>
