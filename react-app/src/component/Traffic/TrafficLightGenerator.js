@@ -56,7 +56,7 @@ const TrafficLightGenerator = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-6 gap-4">
         {lights.map((light) => (
           <TrafficLight key={light.id} timers={light.timers} />
         ))}
