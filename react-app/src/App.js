@@ -72,12 +72,17 @@ const PageRoutes = [
 ];
 function App() {
   return (
-    <main className="min-w-full flex justify-center p-20">
-      <div>
+    <main className="min-w-full flex justify-center px-10 py-4">
+      <div className="flex flex-col items-center my-10">
+        <a
+          href="/"
+          className="text-3xl font-sm py-2 px-5 rounded-md mb-8 bg-[#5959a0] text-white"
+        >
+          Home
+        </a>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home PageRoutes={PageRoutes} />} />
-
             {PageRoutes.map((page) => (
               <Route
                 key={page.title}
